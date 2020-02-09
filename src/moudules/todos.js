@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import produce from 'immer';
 
 const CHANGE_INPUT = 'todos/CHANGE_INPUT'; //인풋 값을 변경함
 const INSERT = 'todos/INSERT'; // 새로운 todo를 등록함
@@ -34,11 +33,12 @@ const todos = handleActions(
       ...state,
       todos: state.todos.concat(todo),
     }),
-    [TOGGLE]: (state, { payload: id }) =>
-      produce(state, draft => {
-        const todo = draft.todos.find(todo => todo.id === id);
-        todo.done = !todo.done;
-      }),
+    [TOGGLE]: (state, { payload: id }) => ({
+      ...state,
+      todos: state.todos.map(todo =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo,
+      ),
+    }),
     [REMOVE]: (state, { payload: id }) => ({
       ...state,
       todos: state.todos.filter(todo => todo.id !== id),

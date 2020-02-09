@@ -1,22 +1,5 @@
 import React from 'react';
 
-const TodoItem = ({ todo, onToggle, onRemove }) => {
-  return (
-    <div>
-      <input
-        type="checkbox"
-        onClick={() => onToggle(todo.id)}
-        checked={todo.done}
-        readOnly={true}
-      />
-      <span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>
-        {todo.text}
-      </span>
-      <button onClick={() => onRemove(todo.id)}>삭제</button>
-    </div>
-  );
-};
-
 const Todos = ({
   input,
   todos,
@@ -29,12 +12,13 @@ const Todos = ({
     e.preventDefault();
     onInsert(input);
     onChangeInput('');
+    // console.log(e);
   };
   const onChange = e => onChangeInput(e.target.value);
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <input value={input} onChange={onChange} />
+        <input value={input} onChange={onChange} autocomplete="off" />
         <button type="submit">등록</button>
       </form>
       <div>
@@ -52,3 +36,20 @@ const Todos = ({
 };
 
 export default Todos;
+
+const TodoItem = ({ todo, onRemove, onToggle }) => {
+  return (
+    <div>
+      <input
+        type="checkbox"
+        onClick={() => onToggle(todo.id)}
+        checked={todo.done}
+        readOnly={true}
+      />
+      <span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>
+        {todo.text}
+      </span>
+      <button onClick={() => onRemove(todo.id)}>삭제</button>
+    </div>
+  );
+};
